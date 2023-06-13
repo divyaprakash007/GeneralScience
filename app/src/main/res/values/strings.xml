@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">General Science Quiz</string>
+    <string name="app_theme">AppTheme</string>
 </resources>
