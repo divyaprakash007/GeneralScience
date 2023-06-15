@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+<!--    <item-->
+<!--        android:id="@+id/action_settings"-->
+<!--        android:title="Settings"-->
+<!--        app:showAsAction="never"/>-->
     <item
-        android:id="@+id/action_settings"
-        android:title="Settings"
+        android:id="@+id/action_rateUs"
+        android:title="Rate Us"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_ShareApp"
+        android:title="Share App"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_privacy_policy"
+        android:title="Privacy Policy"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_terms"
+        android:title="Terms and Conditions"
         app:showAsAction="never"/>
 </menu>
