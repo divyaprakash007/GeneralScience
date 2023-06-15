@@ -1,5 +1,7 @@
 package com.dp.gk.Activity;
 
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,15 +17,67 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.dp.gk.R;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 
 public class HomeActivity extends AppCompatActivity {
+    private Button btnOneLiners;
+    private Button btnPracticeSets;
+    private Button btnImportantQuiz;
+    private Button btnImportantMonthlyQuiz;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         registerForContextMenu(toolbar);
+
+        // Initialize buttons
+        btnOneLiners = findViewById(R.id.btn_oneLiners);
+        btnPracticeSets = findViewById(R.id.btn_practice_sets);
+        btnImportantQuiz = findViewById(R.id.btn_important_quiz);
+        btnImportantMonthlyQuiz = findViewById(R.id.btn_important_monthly_quiz);
+
+        // Set click listeners for buttons
+        btnOneLiners.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HomeActivity.this, "One Liners clicked", Toast.LENGTH_SHORT).show();
+                // Add your logic for One Liners button click here
+            }
+        });
+
+        btnPracticeSets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HomeActivity.this, "Latest Practice Sets clicked", Toast.LENGTH_SHORT).show();
+                // Add your logic for Latest Practice Sets button click here
+            }
+        });
+
+        btnImportantQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HomeActivity.this, "Latest Important Quizs clicked", Toast.LENGTH_SHORT).show();
+                // Add your logic for Latest Important Quizs button click here
+            }
+        });
+
+        btnImportantMonthlyQuiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HomeActivity.this, "Monthly Important Quizs clicked", Toast.LENGTH_SHORT).show();
+                // Add your logic for Monthly Important Quizs button click here
+            }
+        });
+
+
     }
 
     @Override
@@ -81,6 +136,49 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // Do nothing to disable the back button
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        UpdateApp();
+    }
+
+    public void UpdateApp(){
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(this);
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+        // Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener(result -> {
+
+            if (result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+//                requestUpdate(result);
+                android.view.ContextThemeWrapper ctw = new android.view.ContextThemeWrapper(this,R.style.Theme_AlertDialog);
+                final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(ctw);
+                alertDialogBuilder.setTitle("Update NTT Netmagic");
+                alertDialogBuilder.setCancelable(false);
+                alertDialogBuilder.setIcon(R.mipmap.app_logo);
+                alertDialogBuilder.setMessage("Fitness Trainer recommends that you update to the latest version for a seamless & enhanced performance of the app.");
+                alertDialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        try{
+                            startActivity(new Intent("android.intent.action.VIEW", Uri.parse("market://details?id="+getPackageName())));
+                        }
+                        catch (ActivityNotFoundException e){
+                            startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName())));
+                        }
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("No Thanks",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+                alertDialogBuilder.show();
+
+            } else {
+
+            }
+        });
     }
 
 }

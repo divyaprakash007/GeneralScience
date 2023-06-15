@@ -6,4 +6,6 @@
     </style>
 
     <style name="Theme.GeneralScience" parent="Base.Theme.GeneralScience" />
+    <style name="Theme_AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert"/>
+
 </resources>
